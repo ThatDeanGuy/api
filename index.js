@@ -1,13 +1,21 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
+const express = require('express')
+const app = express()
 
-// Simple endpoint
-app.get('/hello', (req, res) => {
-    res.json({ message: 'Hello World!' });
-});
+app.use(express.json())
+
+// Import routes
+const usersRoute = require('./src/routes/users.route')
+const authRoute = require('./src/routes/auth.route')
+
+// Use routes
+app.use('/api/v1/', usersRoute)
+app.use('/api/v1/', authRoute)
 
 // Start server
+const port = process.env.PORT || 3000
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
+    console.log(`🚀 Server is running at ${port}`)
+})
+
+// Start DB connection
+require('./src/config/db')
